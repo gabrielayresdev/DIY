@@ -28,7 +28,7 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const loginAction = async (data: LoginProps) => {
     try {
-      const response = await fetch("your-api-endpoint/auth/login", {
+      const response = await fetch("http://localhost:3333/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,8 +36,9 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      if (res.data) {
-        setUser(res.data.user);
+
+      if (res.token && res.user) {
+        setUser(res.user);
         setToken(res.token);
         localStorage.setItem("token", res.token);
         navigate("/dashboard");
@@ -49,11 +50,36 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
     }
   };
 
+  const getData = React.useCallback(async () => {
+    if (!user && token) {
+      try {
+        const response = await fetch("http://localhost:3333/getData", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const res = await response.json();
+        console.log(res);
+        if (res.user) {
+          setUser(res.user);
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [navigate, token, user]);
+
+  React.useEffect(() => {
+    getData();
+  }, [token, getData]);
+
   const logOut = () => {
     setUser(null);
-    setToken("");
-    localStorage.removeItem("site");
-    navigate("/login");
+    setToken(null);
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (

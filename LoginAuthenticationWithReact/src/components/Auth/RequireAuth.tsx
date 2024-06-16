@@ -1,17 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-const RequireAuth = ({ children }: React.PropsWithChildren) => {
+const RequireAuth = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  // Will navigate to login since auth.user is always null when page is rendered, but login will send back to home as soon as token is validated
   React.useEffect(() => {
-    if (!auth.user) navigate("/login");
+    if (!auth.user) navigate("/");
   }, [auth.user, navigate]);
 
-  return <>{children}</>;
+  // Can also use children instead of Outlet
+  return <>{<Outlet />}</>;
 };
 
 export default RequireAuth;
