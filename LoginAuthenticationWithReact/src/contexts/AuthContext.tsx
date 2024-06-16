@@ -54,7 +54,6 @@ const AuthProvider = ({ children }: React.PropsWithChildren) => {
     if (!user && token) {
       try {
         const response = await fetch("http://localhost:3333/getData", {
-          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
