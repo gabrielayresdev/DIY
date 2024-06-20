@@ -9,6 +9,7 @@ export const Container = styled.div`
   justify-content: center;
   gap: 1rem;
   background: ${({ theme }) => theme.pallete.background};
+  transition: all 0.3s;
 `;
 
 export const Text = styled.h1`
@@ -16,4 +17,5 @@ export const Text = styled.h1`
   font-size: 2rem;
   font-weight: 700;
   color: ${({ theme }) => theme.pallete.text};
+  transition: all 0.3s;
 `;
