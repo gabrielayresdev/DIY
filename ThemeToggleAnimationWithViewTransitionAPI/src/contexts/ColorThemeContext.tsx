@@ -1,4 +1,3 @@
-// src/ColorThemeContext.js
 import React from "react";
 import { flushSync } from "react-dom";
 
